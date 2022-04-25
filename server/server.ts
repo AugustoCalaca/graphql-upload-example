@@ -39,7 +39,7 @@ const resolvers = {
       useOrCreateFolder();
       
       const fileStream = createReadStream();
-      const path = join(__dirname, `${FOLDER}/${filename}`);
+      const path = join(__dirname, FOLDER, filename);
       const output = fs.createWriteStream(path);
 
       fileStream.pipe(output);
