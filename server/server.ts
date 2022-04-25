@@ -6,6 +6,8 @@ import { join } from "path";
 import fs from "fs";
 import { finished } from "stream/promises";
 
+import { useOrCreateFolder, FOLDER } from './useOrCreateFolder'
+
 const typeDefs = gql`
   scalar Upload
   type File {
@@ -34,8 +36,11 @@ const resolvers = {
       console.log({ file, _root });
       const { createReadStream, filename, encoding, mimetype } = await file;
 
+      useOrCreateFolder();
+      
       const fileStream = createReadStream();
-      const output = fs.createWriteStream(join(__dirname, `up/${filename}`));
+      const path = join(__dirname, `${FOLDER}/${filename}`);
+      const output = fs.createWriteStream(path);
 
       fileStream.pipe(output);
       await finished(output);
